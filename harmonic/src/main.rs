@@ -5,8 +5,6 @@ fn main() {
     loop {
         let next = sum + 1.0 / n as f32;
 
-        println!("{}", n);
-
         if next == sum {
             println!("Numerically stopped.");
             println!("n = {}", n);
