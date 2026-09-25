@@ -1,0 +1,581 @@
+% chapter1-body.tex — pure content, no preamble.
+% This file is \input{} by both main.tex (book) and chapter1.tex (article).
+
+
+
+
+\section{Experiment}
+I write a code in RUST to test how harmonic series
+converge.
+
+Here is what i found and I doubt.
+
+In rust there are f32 \& f64 precison
+
+With the simple code \cite[naive-method]{naive-method},
+I can only finish the f32 with the following result.
+
+To explain this I recall the definition of the f32
+standars by IEEE, there are 23 digits of number and
+8 number of exponent and 1 digits in sign.
+
+We need find \(\frac{1}{n}\le \frac{1}{2}\Delta\)
+
+Which the \(\Delta\) is the step size of the specific
+range.
+
+With this case is \(H_{2^{21}}\approx 15\),
+and the \(\Delta\) in this range is \(2^{-23}*2^{3}=2^{-20}\)
+
+According to IEEE standars when we hit \(2^{21}\)
+we exactly have \(\frac{1}{2^{21}}=\frac{1}{2}\Delta\).
+
+Then no more step are made, our program terminate.
+
+But according to the same logic we can derive,
+when the precision to f64, we have to stop at rough,
+\(H_{2^{48}}\approx 34\),
+
+With the step size \(\Delta=2^{-47}\),
+\(\frac{1}{2^{48}}=\frac{1}{2}\Delta\).
+
+But this would take about \(10^{6}s\) which is a really
+long time.
+
+With the same idea when \(\frac{1}{n}\le \Delta\) but
+\(\frac{1}{n}\ge \frac{1}{2}\Delta\).
+A lot term are bigger and simply equal \(\Delta\).
+So with help with ChatGPT
+I have \cite[accelerated]{accelerated}, to fast get the
+result.
+
+And verifies this idea within f32 \cite[verifyf32]{verifyf32}
+
+Here is my Results.
+\begin{lstlisting}
+Numerically stopped.
+n = 2097152
+sum = 15.403683
+1/n = 0.00000047683716
+\end{lstlisting}
+
+\begin{lstlisting}
+accelerator starts:
+  first n to process = 1675
+  current sum        = 8.000487327575684
+  bits               = 01000001000000000000000111111111
+
+naive:
+  n     = 2097152
+  sum   = 15.403682708740234
+  1/n   = 4.768371582031250e-7
+  bits  = 01000001011101100111010101111100
+
+accelerated:
+  n     = 2097152
+  sum   = 15.403682708740234
+  1/n   = 4.768371582031250e-7
+  bits  = 01000001011101100111010101111100
+  blocks= 1252
+
+PASS: naive and accelerated f32 end bit-for-bit identically.
+\end{lstlisting}
+
+\begin{lstlisting}
+entered [16, 32):
+last n = 4989191
+sum    = 16.00000009545252055
+
+Numerically stopped.
+n   = 281474976710657
+sum = 34.12203566804787158
+1/n = 3.55271367880048831e-15
+\end{lstlisting}
+
+Professor I have analyzed your slides' numericals
+it is , \(10^{15}\) with \(s_n=35.116\) which I guess your
+precision system is some what a F64 systme.
+
+and for the \(\frac{1}{k^2}\) problem is
+\(n=94,906,266\) whic is highly close to \(2^{53/2}\)
+
+I guess you also use a f64 system For the same logic as follow.
+
+\(\zeta(2)\approx 1.64\) with this range the \(\Delta=2^{-52}\)
+
+we need \(\frac{1}{k^2}\le \frac{1}{2}\Delta\)
+
+which is \(k\approx 2^{\frac{53}{2}}\)
+
+Finally, As I already guressed your numerical system digits,
+I have a chanllenge question
+to ask you, This two result the square is okay to
+wait, but how you get the result for the harmonic series,
+with my computer have \(\frac{10^9tick}{second}\) i need to run
+\(10^{15-9}=10^{6}s\) which is a very long time(11.5 days)?
+
+I do this by the code \cite[accelerated]{accelerated},
+but how you had done to get the result?
+
+
+% \subsection{本文问题定义}
+% 对于$6\mid abc中(a,b,c)=(2,5,3m)$这一族，尝试证明CKW成立。
+% 也就是
+% $$
+%     \boxed{
+%         p_a,p_b,p_c\text{ 是正则序列}
+%         \Leftarrow
+%         (a,b,c)=(2,5,3m),\forall m\geq 1.
+%     }
+% $$
+
+
+% \subsection{证明过程}
+% Step1
+
+% 我们要证明
+
+% $$
+%     p_2,p_3,p_5
+% $$
+
+% regular。
+
+% 也就是证明
+
+% $$
+%     \begin{cases}
+%         x^2+y^2+z^2=0, \\
+%         x^3+y^3+z^3=0, \\
+%         x^5+y^5+z^5=0
+%     \end{cases}
+% $$
+
+% 只能推出
+
+% $$
+%     x=y=z=0.
+% $$
+
+% 全部换成基本对称多项式
+
+% $$
+%     e_1,e_2,e_3.
+% $$
+
+% Step2
+
+% 由 Newton 恒等式\cite{NId}：
+
+% $$
+%     p_1=e_1.
+% $$
+
+% 以及
+
+% $$
+%     p_2=e_1p_1-2e_2.
+% $$
+
+% 因为 $p_1=e_1$，所以
+
+% $$
+%     \boxed{p_2=e_1^2-2e_2}.
+% $$
+
+% 现在假设
+
+% $$
+%     p_2=0.
+% $$
+
+% 那么
+
+% $$
+%     e_1^2-2e_2=0,
+% $$
+
+% 所以
+
+% $$
+%     \boxed{e_2=\frac{e_1^2}{2}}.
+% $$
+
+
+% 原来三个未知量
+
+% $$
+%     (e_1,e_2,e_3)
+% $$
+
+% 现在 $e_2$ 已经由 $e_1$ 决定了。
+
+% 只剩下
+
+% $$
+%     e_1,e_3.
+% $$
+
+% Step3
+
+% 加入 $p_3=0$
+
+% Newton 恒等式给
+
+% $$
+%     p_3=e_1p_2-e_2p_1+3e_3.
+% $$
+
+% 因为
+
+% $$
+%     p_2=0,\qquad p_1=e_1,
+% $$
+
+% 所以
+
+% $$
+%     p_3=-e_1e_2+3e_3.
+% $$
+
+% 要求
+
+% $$
+%     p_3=0,
+% $$
+
+% 于是
+
+% $$
+%     3e_3=e_1e_2.
+% $$
+
+% 刚才已经知道
+
+% $$
+%     e_2=\frac{e_1^2}{2}.
+% $$
+
+% 代入：
+
+% $$
+%     3e_3
+%     =
+%     e_1\frac{e_1^2}{2}
+%     =
+%     \frac{e_1^3}{2}.
+% $$
+
+% 所以
+
+% $$
+%     \boxed{e_3=\frac{e_1^3}{6}}.
+% $$
+
+
+% $$
+%     \boxed{
+%         p_2=p_3=0
+%     }
+% $$
+
+% 已经强迫
+
+% $$
+%     \boxed{
+%         e_2=\frac12e_1^2,\qquad
+%         e_3=\frac16e_1^3.
+%     }
+% $$
+
+% 所以原来三维的 $(e_1,e_2,e_3)$ 空间，现在只剩下一个自由参数：
+
+% $$
+%     e_1.
+% $$
+
+% Step4
+
+% 现在看 $p_5$
+
+% 我们甚至不需要展开 $p_5$。
+
+% Newton 递推是
+
+% $$
+%     p_k=e_1p_{k-1}-e_2p_{k-2}+e_3p_{k-3}.
+% $$
+
+% 先取 $k=4$：
+
+% $$
+%     p_4=e_1p_3-e_2p_2+e_3p_1.
+% $$
+
+% 而我们已经假定
+
+% $$
+%     p_2=p_3=0.
+% $$
+
+% 所以前两项消失：
+
+% $$
+%     p_4=e_3p_1.
+% $$
+
+% 又因为
+
+% $$
+%     p_1=e_1,
+% $$
+
+% 所以
+
+% $$
+%     \boxed{p_4=e_1e_3}.
+% $$
+
+% 然后取 $k=5$：
+
+% $$
+%     p_5=e_1p_4-e_2p_3+e_3p_2.
+% $$
+
+% 后两项又因为
+
+% $$
+%     p_2=p_3=0
+% $$
+
+% 而消失。
+
+% 所以
+
+% $$
+%     p_5=e_1p_4.
+% $$
+
+% 而 $p_4=e_1e_3$，因此
+
+% $$
+%     \boxed{p_5=e_1^2e_3}.
+% $$
+
+% 再代入
+
+% $$
+%     e_3=\frac{e_1^3}{6},
+% $$
+
+% 得到
+
+% $$
+%     \boxed{p_5=\frac{e_1^5}{6}}.
+% $$
+
+% 现在第三个方程要求
+
+% $$
+%     p_5=0.
+% $$
+
+% 因此
+
+% $$
+%     \frac{e_1^5}{6}=0,
+% $$
+
+% 只能有
+
+% $$
+%     \boxed{e_1=0}.
+% $$
+
+% 于是前面的公式立刻给：
+
+% $$
+%     e_2=\frac{e_1^2}{2}=0,
+% $$
+
+% $$
+%     e_3=\frac{e_1^3}{6}=0.
+% $$
+
+% 所以
+
+% $$
+%     \boxed{e_1=e_2=e_3=0}.
+% $$
+
+
+% LastStep
+
+% 使用维达
+
+% $x,y,z$ 是
+
+% $$
+%     T^3-e_1T^2+e_2T-e_3
+% $$
+
+% 的三个根。
+
+% 现在
+
+% $$
+%     e_1=e_2=e_3=0,
+% $$
+
+% 所以这个多项式就是
+
+% $$
+%     T^3.
+% $$
+
+% 它唯一的根是
+
+% $$
+%     0.
+% $$
+
+% 因此
+
+% $$
+%     \boxed{x=y=z=0}.
+% $$
+
+% 是一个三重根，是唯一的
+
+% 所以我们证明了
+
+% $$
+%     \boxed{p_2,p_3,p_5\text{ regular}.}
+% $$
+
+
+
+
+% \section{英文证明}
+
+
+% % \subsection{MVHR}
+% % 本问题理论部分可以参考\cite[MVHR]{MVHR}模型\\
+% % 先把我们的问题严格写出来
+% % 假设我们现在有：
+% % $$
+% %     Q_S=100\text{ 吨豆粕}
+% % $$
+% % 现货价格变化：
+% % $$
+% %     \Delta S
+% % $$
+
+% % 期货价格变化：
+
+% % $$
+% %     \Delta F
+% % $$
+
+% % 我们决定 hedge 比例：
+
+% % $$
+% %     h
+% % $$
+
+% % 那么每吨对应的套保 PnL 变化可以写成：
+
+% % $$
+% %     \Delta P=\Delta S-h\Delta F
+% % $$
+
+% % 我们的目标非常朴素：
+
+% % 找一个 $h$，让这个组合尽可能不波动。
+
+% % 也就是：
+
+% % $$
+% %     \min_h Var(\Delta S-h\Delta F)
+% % $$
+
+% % 把它展开：
+
+% % $$
+% %     Var(\Delta S-h\Delta F)
+% %     =
+% %     Var(\Delta S)
+% %     +h^2Var(\Delta F)
+% %     -2hCov(\Delta S,\Delta F)
+% % $$
+
+% % 对 $h$ 求导：
+
+% % $$
+% %     2hVar(\Delta F)
+% %     -
+% %     2Cov(\Delta S,\Delta F)
+% %     =0
+% % $$
+
+% % 于是：
+
+% % $$
+% %     \boxed{
+% %         h^*
+% %         =
+% %         \frac{Cov(\Delta S,\Delta F)}
+% %         {Var(\Delta F)}
+% %     }
+% % $$
+
+% % 这就是我们现在要用的核心公式。
+
+
+% % \subsection{数据获取}
+% % 数据从网站项目获取\cite[akshare]{akshare}，此软件的文档
+% % 在\cite[doc]{akshare-doc}。
+% % 数据获取实验在\textbf{MVHR-akshare}分支。
+
+
+
+
+\section{Reference}
+\bibliographystyle{plain}  % or another style like unsrt, IEEEtran, etc.
+\bibliography{chapter1-body-references}  % references.bib is the file name
+
+
+% \subsection{Definition of EMH}
+% \begin{definition}[EMH means Symmetries]
+%     \label{def:mydefinition}
+%     We say a market is completely EMH if and
+%     only if for every condition $A$, the random
+%     variable of the logarithmic growth rate $W$
+%     agrees that $\mathbb{E}_{W\mid A}(W)\doteq 0$.
+% \end{definition}
+
+
+% \subsection{Prior Work}
+% Discussion of what others have done.
+
+
+
+
+% \section{Methods}
+% How you approached the problem.
+
+
+
+
+% \section{Results}
+% What you found.
+
+
+
+
+% \section{Conclusion}
+% Your closing thoughts.
+
+
+
+

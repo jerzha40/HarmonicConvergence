@@ -1,0 +1,30 @@
+\documentclass{article}
+
+% Load the exact same shared packages
+% (path is relative to THIS file's location, so we go up one level)
+\input{../preamble}
+
+\title{市场建模反问题}
+\author{张津睿}
+\date{20260818-\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    这篇报告主要尝试通过公开的数据对隐藏的市场参数进行建模\\
+    建立一个基于贝叶斯的参数估计模型
+    \cite{EMH}
+    % This essay is a remade version of the
+    % CAC Experiments Report located in
+    % \href{https://github.com/unjerry/CACReport/blob/CAC-Experiments-Report/main.tex}{CACReport}.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% Pull in the exact same content the book uses
+\input{inverseproblem-body}
+
+\end{document}

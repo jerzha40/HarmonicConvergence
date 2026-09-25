@@ -1,0 +1,167 @@
+% chapter1-body.tex — pure content, no preamble.
+% This file is \input{} by both main.tex (book) and chapter1.tex (article).
+
+
+
+
+\section{模型分析}
+如果需要预测概率与其直接统计价格记录数据的统计量，不如
+对隐藏变量进行先验估计。进而获得真实对手盘的状态。
+
+根据隐藏参数，通过决策模型，得到一个价格的模拟$\hat{y}$
+而真实市场观察值是$y$这样我们就可以进行参数估计。
+
+希望通过这种方式获得每个时刻第二天甚至之后一段时间的
+真实预测。
+
+
+\subsection{隐藏参数设计}
+
+
+\subsection{问题标准化定义}
+以豆粕为例实际进货卖货涉及具体商谈得到现货价，$S$，
+Spot Price\\
+（现货价格）。与之对应的是这一时段期货的期货价格，$F$，
+Future Price\\
+（期货价格）
+
+定义基差
+$$
+    b=S-F
+$$
+
+此三者都是时间序列数据所以对于某个周期在时刻$t$上有
+$b_t=S_t-F_t$
+
+在一点价进货到点价卖货这一时间段记为$\Delta t$
+与之对应的理想实际现货价格变化，期货价格变化和点差变化记作，
+$\Delta S,\Delta F, \Delta b$.
+
+此次贸易货物量为$Q$
+
+
+
+
+\section{Hedge问题}
+
+
+\subsection{MVHR}
+本问题理论部分可以参考\cite[MVHR]{MVHR}模型\\
+先把我们的问题严格写出来
+假设我们现在有：
+$$
+    Q_S=100\text{ 吨豆粕}
+$$
+现货价格变化：
+$$
+    \Delta S
+$$
+
+期货价格变化：
+
+$$
+    \Delta F
+$$
+
+我们决定 hedge 比例：
+
+$$
+    h
+$$
+
+那么每吨对应的套保 PnL 变化可以写成：
+
+$$
+    \Delta P=\Delta S-h\Delta F
+$$
+
+我们的目标非常朴素：
+
+找一个 $h$，让这个组合尽可能不波动。
+
+也就是：
+
+$$
+    \min_h Var(\Delta S-h\Delta F)
+$$
+
+把它展开：
+
+$$
+    Var(\Delta S-h\Delta F)
+    =
+    Var(\Delta S)
+    +h^2Var(\Delta F)
+    -2hCov(\Delta S,\Delta F)
+$$
+
+对 $h$ 求导：
+
+$$
+    2hVar(\Delta F)
+    -
+    2Cov(\Delta S,\Delta F)
+    =0
+$$
+
+于是：
+
+$$
+    \boxed{
+        h^*
+        =
+        \frac{Cov(\Delta S,\Delta F)}
+        {Var(\Delta F)}
+    }
+$$
+
+这就是我们现在要用的核心公式。
+
+
+\subsection{数据获取}
+数据从网站项目获取\cite[akshare]{akshare}，此软件的文档
+在\cite[doc]{akshare-doc}。
+数据获取实验在\textbf{MVHR-akshare}分支。
+
+
+
+
+\section{Reference}
+\bibliographystyle{plain}  % or another style like unsrt, IEEEtran, etc.
+\bibliography{inverseproblem-body-references}  % references.bib is the file name
+
+
+% \subsection{Definition of EMH}
+% \begin{definition}[EMH means Symmetries]
+%     \label{def:mydefinition}
+%     We say a market is completely EMH if and
+%     only if for every condition $A$, the random
+%     variable of the logarithmic growth rate $W$
+%     agrees that $\mathbb{E}_{W\mid A}(W)\doteq 0$.
+% \end{definition}
+
+
+% \subsection{Prior Work}
+% Discussion of what others have done.
+
+
+
+
+% \section{Methods}
+% How you approached the problem.
+
+
+
+
+% \section{Results}
+% What you found.
+
+
+
+
+% \section{Conclusion}
+% Your closing thoughts.
+
+
+
+
